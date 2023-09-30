@@ -8,6 +8,6 @@ func perform(obj,delta):
 		obj.position = nextPos
 		return false
 	else:
-		obj.position = obj.get_map().get_grid_pos(obj.position + Vector2(0,16)) * obj.get_map().tilesize
+		obj.position = obj.get_map().get_grid_pos(obj.position + Vector2(0,15)) * obj.get_map().tilesize
 		obj.get_map().check_terminal(obj.position)
 		return true

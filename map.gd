@@ -2,11 +2,16 @@ extends Node2D
 signal update_targets
 
 var map = []
+var robot
+var robotstart: Vector2
 var tiles = []
 var tilesize = 16
 var memorylimit = 8 setget set_memory_limit, get_memory_limit
 var targets = 0
 var round_active = true
+
+var level:int
+var ended = false
 
 var robotscene = preload("res://Robot.tscn")
 var floorscene = preload("res://Floor.tscn")
@@ -15,26 +20,48 @@ var terminalscene = preload("res://Terminal.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	init_map()
-	init_robot(8,7)
+	level = GameController.get_next_level()
+	init_map(level)
 	self.connect("update_targets", get_parent(), "update_targets")
 
 func _process(delta):
 	update_targets()
 
-func init_map():
-	for i in range(16):
+func _input(event):
+	if(ended):
+		if event.is_action_pressed("input_a") || event.is_action_pressed("input_b") || event.is_action_pressed("input_start"):
+			get_tree().change_scene("res://map.tscn")
+
+func init_map(lvl):
+	var levelget = Levels.get_level(lvl)
+	if(levelget == null):
+		print("no more levels")
+		return
+	var levelstring = levelget.split(";",false)	
+	var startpos = levelstring[0].split(",",false)
+	init_robot(int(startpos[0]),int(startpos[1]))
+	for i in range(0,levelstring.size()-1):
+		var line = levelstring[i+1].split(",",false)
 		map.append([])
 		tiles.append([])
-		for j in range (13):
-			#map[i].append(randi()%2)
-			map[i].append(0)
+		for j in range(0,line.size()):
+			map[i].append(int(line[j]))
 			tiles[i].append(null)
-			if(i == 1 && j == 4):
-				map[i][j] = 2
-			if(i == 0 && j == 5):
-				map[i][j] = 1
 			init_tile(i,j)
+
+#func init_map():
+#	for i in range(16):
+#		map.append([])
+#		tiles.append([])
+#		for j in range (13):
+#			#map[i].append(randi()%2)
+#			map[i].append(0)
+#			tiles[i].append(null)
+#			if(i == 1 && j == 4):
+#				map[i][j] = 2
+#			if(i == 0 && j == 5):
+#				map[i][j] = 1
+#			init_tile(i,j)
 
 func init_tile(x,y):
 	#based on integer mapping:
@@ -56,10 +83,13 @@ func init_tile(x,y):
 	object.position = Vector2(x*tilesize, y*tilesize)
 
 func init_robot(x,y):
-	var object = robotscene.instance()
-	add_child(object)
-	object.position = Vector2(x*tilesize,y*tilesize)
-	object.connect("update_memory", get_parent(), "update_memory")
+	robot = robotscene.instance()
+	add_child(robot)
+	robot.position = Vector2(x*tilesize,y*tilesize)
+	robotstart = robot.position
+	robot.connect("update_memory", get_parent(), "update_memory")
+	robot.connect("path_finished", get_parent(), "end_level")
+	robot.connect("path_finished", self, "end_level")
 
 func is_floor(pos):
 	var gridpos = get_grid_pos(pos)
@@ -77,6 +107,8 @@ func is_floor(pos):
 		return false
 
 func check_terminal(pos):
+	if(!round_active):
+		return
 	var gridpos = get_grid_pos(pos)
 	if(gridpos.x < map.size() -3 && map[gridpos.x+1][gridpos.y] == 2):
 		targets -= 1
@@ -89,6 +121,7 @@ func check_terminal(pos):
 	if(targets == 0):
 		round_active = false
 		print("You won!")
+		play_program()
 
 func get_grid_pos(pos):
 	var x = int(pos.x) / 16
@@ -103,3 +136,13 @@ func get_memory_limit():
 
 func update_targets():
 	emit_signal("update_targets", targets)
+
+func play_program():
+	robot.position = robotstart
+	robot.play_program()
+
+func end_level():
+	if(!ended):
+		GameController.level_finished(level)
+		ended = true
+	

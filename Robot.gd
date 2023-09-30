@@ -1,5 +1,6 @@
 extends Sprite
 signal update_memory
+signal path_finished
 
 var interactive = true
 var speed = 96 setget ,get_speed
@@ -21,25 +22,25 @@ func _process(delta):
 						var move = moves.pop_back()
 						move.undo(self)
 						return
-				if(Input.is_action_pressed("input_up")):
+				if(Input.is_action_just_pressed("input_up")):
 					if(has_memory_left()):
 						var obj = move_glide_up.new()
 						moves.append(obj)
 						currentMove = obj
 						return
-				if(Input.is_action_pressed("input_down")):
+				if(Input.is_action_just_pressed("input_down")):
 					if(has_memory_left()):
 						var obj = move_glide_down.new()
 						moves.append(obj)
 						currentMove = obj
 						return
-				if(Input.is_action_pressed("input_right")):
+				if(Input.is_action_just_pressed("input_right")):
 					if(has_memory_left()):
 						var obj = move_glide_right.new()
 						moves.append(obj)
 						currentMove = obj
 						return
-				if(Input.is_action_pressed("input_left")):
+				if(Input.is_action_just_pressed("input_left")):
 					if(has_memory_left()):
 						var obj = move_glide_left.new()
 						moves.append(obj)
@@ -56,6 +57,12 @@ func _process(delta):
 			var finished = currentMove.perform(self,delta)
 			if(finished):
 				currentMove = null
+		else:
+			emit_signal("path_finished")
+
+func play_program():
+	currentMove = null
+	interactive = false
 
 func has_memory_left():
 	if(moves.size() >= map.get_memory_limit()):
@@ -71,4 +78,5 @@ func get_map():
 	return map
 
 func update_memcount():
-	emit_signal("update_memory", map.get_memory_limit() - moves.size())
+	if(interactive):
+		emit_signal("update_memory", map.get_memory_limit() - moves.size())
