@@ -9,6 +9,7 @@ var tilesize = 16
 var memorylimit = 8 setget set_memory_limit, get_memory_limit
 var targets = 0
 var round_active = true
+var boxes = []
 
 var level:int
 var ended = false
@@ -21,6 +22,7 @@ var pushtileupscene = preload("res://Pushtile_Up.tscn")
 var pushtiledownscene = preload("res://Pushtile_Down.tscn")
 var pushtileleftscene = preload("res://Pushtile_Left.tscn")
 var pushtilerightscene = preload("res://Pushtile_Right.tscn")
+var boxtilescene = preload("res://Boxtile.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,7 +41,7 @@ func _input(event):
 func init_map(lvl):
 	var levelget = Levels.get_level(lvl)
 	if(levelget == null):
-		print("no more levels")
+		get_tree().change_scene("res://GameOver.tscn")
 		return
 	var levelstring = levelget.split(";",false)
 	var startpos = levelstring[0].split(",",false)
@@ -77,6 +79,7 @@ func init_tile(x,y):
 	#4 = pushtile down
 	#5 = pushtile left
 	#6 = pushtile up
+	#7 = boxtile
 	var object
 	if(map[x][y] == 0):
 		object = floorscene.instance()
@@ -100,6 +103,14 @@ func init_tile(x,y):
 	if(map[x][y] == 6):
 		object = pushtileupscene.instance()
 		tiles[x][y] = object
+	if(map[x][y] == 7):
+		object = boxtilescene.instance()
+		tiles[x][y] = object
+		var box = object.get_box()
+		add_child(box)
+		box.position = Vector2(x*tilesize + tilesize/2,y*tilesize + tilesize/2)
+		boxes.append(box)
+		map[x][y] = 0
 	add_child(object)
 	object.position = Vector2(x*tilesize, y*tilesize)
 
@@ -122,9 +133,19 @@ func can_move_on(pos):
 	#check if tile is floor
 	var floortiles = [0,3,4,5,6]
 	if(floortiles.has(map[gridpos.x][gridpos.y])):
+		for box in boxes:
+			if get_grid_pos(box.position) == gridpos :
+				return false
 		return true
 	else:
 		return false
+
+func try_push_box(pos, dir):
+	var gridpos = get_grid_pos(pos)
+	for box in boxes:
+		if get_grid_pos(box.position) == gridpos :
+			box.push(dir)
+			return box
 
 func is_on_pushtile(pos):
 	var gridpos = get_grid_pos(pos)
@@ -143,7 +164,7 @@ func check_terminal(pos):
 	if(!round_active):
 		return
 	var gridpos = get_grid_pos(pos)
-	if(gridpos.x < map.size() -3 && map[gridpos.x+1][gridpos.y] == 2):
+	if(gridpos.x < map.size() -1 && map[gridpos.x+1][gridpos.y] == 2):
 		if !tiles[gridpos.x+1][gridpos.y].get_running():
 			tiles[gridpos.x+1][gridpos.y].set_running(true)
 			targets -= 1
@@ -153,7 +174,7 @@ func check_terminal(pos):
 			tiles[gridpos.x-1][gridpos.y].set_running(true)
 			targets -= 1
 			result.append(tiles[gridpos.x-1][gridpos.y])
-	if(gridpos.y < map[0].size() -3 && map[gridpos.x][gridpos.y+1] == 2):
+	if(gridpos.y < map[0].size() -1 && map[gridpos.x][gridpos.y+1] == 2):
 		if !tiles[gridpos.x][gridpos.y+1].get_running():
 			tiles[gridpos.x][gridpos.y+1].set_running(true)
 			targets -= 1
@@ -165,7 +186,6 @@ func check_terminal(pos):
 			result.append(tiles[gridpos.x][gridpos.y-1])
 	if(targets == 0):
 		round_active = false
-		print("You won!")
 		play_program()
 	return result
 

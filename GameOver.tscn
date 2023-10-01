@@ -1,0 +1,76 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://UITheme.tres" type="Theme" id=1]
+[ext_resource path="res://GameOver.gd" type="Script" id=2]
+[ext_resource path="res://TintRect.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Sprites/Robot.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Robot_front.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/Robot_back.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/Robot_left.png" type="Texture" id=7]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="GameOver" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 256.0
+margin_bottom = 240.0
+theme = ExtResource( 1 )
+
+[node name="Panel" type="Panel" parent="ColorRect"]
+margin_left = 27.0
+margin_top = 45.0
+margin_right = 234.0
+margin_bottom = 192.0
+
+[node name="Text" type="Label" parent="ColorRect/Panel"]
+margin_left = 23.0
+margin_top = 17.0
+margin_right = 185.0
+margin_bottom = 105.0
+text = "Congratulations!
+
+You have completed all assigned tasks.
+...But our princess is in another castle"
+align = 1
+autowrap = true
+percent_visible = 0.0
+
+[node name="Continue" type="Label" parent="ColorRect/Panel"]
+visible = false
+margin_left = 54.0
+margin_top = 120.0
+margin_right = 150.0
+margin_bottom = 130.0
+text = "~Back to menu"
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 204, 39 )
+frames = SubResource( 5 )
+frame = 2
+playing = true
+
+[node name="Tint_Layer" parent="." instance=ExtResource( 3 )]

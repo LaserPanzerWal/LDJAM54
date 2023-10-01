@@ -17,6 +17,7 @@ var pushtileupscene = preload("res://Pushtile_Up.tscn")
 var pushtiledownscene = preload("res://Pushtile_Down.tscn")
 var pushtileleftscene = preload("res://Pushtile_Left.tscn")
 var pushtilerightscene = preload("res://Pushtile_Right.tscn")
+var boxtilescene = preload("res://Boxtile.tscn")
 
 var tilelabel
 var memlabel
@@ -73,6 +74,9 @@ func init_tile(x,y):
 	if(map[x][y] == 6):
 		object = pushtileupscene.instance()
 		tiles[x][y] = object
+	if(map[x][y] == 7):
+		object = boxtilescene.instance()
+		tiles[x][y] = object
 	add_child(object)
 	object.position = Vector2(x*tilesize, y*tilesize)
 
@@ -102,6 +106,8 @@ func _input(event):
 							tiles[gridpos.x][gridpos.y] = pushtileleftscene.instance()
 						if(map[gridpos.x][gridpos.y] == 6):
 							tiles[gridpos.x][gridpos.y] = pushtileupscene.instance()
+						if(map[gridpos.x][gridpos.y] == 7):
+							tiles[gridpos.x][gridpos.y] = boxtilescene.instance()
 						add_child(tiles[gridpos.x][gridpos.y])
 						tiles[gridpos.x][gridpos.y].position = Vector2(gridpos.x*tilesize, gridpos.y*tilesize)
 					update_string()

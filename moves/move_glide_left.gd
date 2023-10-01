@@ -12,6 +12,7 @@ func perform(obj,delta):
 		obj.position = nextPos
 		return false
 	else:
+		undobox = obj.get_map().try_push_box(nextPos + Vector2 (-7,0), 2)
 		obj.position = (obj.get_map().get_grid_pos(obj.position + Vector2 (-7,0)) * obj.get_map().tilesize) + Vector2(obj.get_map().tilesize / 2, obj.get_map().tilesize /2)
 		undoterminals = obj.get_map().check_terminal(obj.position)
 		return true

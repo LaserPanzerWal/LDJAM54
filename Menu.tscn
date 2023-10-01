@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Sprites/Robot.png" type="Texture" id=1]
 [ext_resource path="res://UITheme.tres" type="Theme" id=2]
@@ -6,6 +6,10 @@
 [ext_resource path="res://Sprites/Logo.png" type="Texture" id=4]
 [ext_resource path="res://sounds/MenuSong.mp3" type="AudioStream" id=5]
 [ext_resource path="res://TintRect.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Sprites/Speaker.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/MusicalNote.png" type="Texture" id=8]
+[ext_resource path="res://Config.gd" type="Script" id=9]
+[ext_resource path="res://sounds/menubeep.wav" type="AudioStream" id=10]
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -106,3 +110,79 @@ autoplay = true
 bus = "Music"
 
 [node name="TintRect" parent="." instance=ExtResource( 6 )]
+
+[node name="Config" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -92.5
+margin_top = -43.0
+margin_right = 92.5
+margin_bottom = 63.0
+script = ExtResource( 9 )
+
+[node name="audiolevel" type="HScrollBar" parent="Config"]
+margin_left = 48.5
+margin_top = 30.0
+margin_right = 155.5
+margin_bottom = 42.0
+mouse_filter = 2
+max_value = 1.0
+step = 0.1
+
+[node name="musiclevel" type="HScrollBar" parent="Config"]
+margin_left = 48.5
+margin_top = 54.0
+margin_right = 155.5
+margin_bottom = 66.0
+mouse_filter = 2
+max_value = 1.0
+step = 0.1
+
+[node name="TextureRect" type="TextureRect" parent="Config"]
+margin_left = 27.5
+margin_top = 53.0
+margin_right = 43.5
+margin_bottom = 69.0
+texture = ExtResource( 8 )
+
+[node name="TextureRect2" type="TextureRect" parent="Config"]
+margin_left = 29.5
+margin_top = 28.0
+margin_right = 45.5
+margin_bottom = 44.0
+texture = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="Config"]
+margin_left = 76.0
+margin_top = 80.0
+margin_right = 116.0
+margin_bottom = 90.0
+text = "Back"
+
+[node name="marker1" type="Label" parent="Config"]
+margin_left = 19.0
+margin_top = 31.0
+margin_right = 27.0
+margin_bottom = 41.0
+text = "~"
+
+[node name="marker2" type="Label" parent="Config"]
+margin_left = 19.0
+margin_top = 56.0
+margin_right = 27.0
+margin_bottom = 66.0
+text = "~"
+
+[node name="marker3" type="Label" parent="Config"]
+margin_left = 65.0
+margin_top = 80.0
+margin_right = 73.0
+margin_bottom = 90.0
+text = "~"
+
+[node name="Audio" type="AudioStreamPlayer" parent="Config"]
+stream = ExtResource( 10 )
+bus = "Audio"

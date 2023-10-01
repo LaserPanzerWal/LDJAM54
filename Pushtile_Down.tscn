@@ -78,7 +78,7 @@ animations = [ {
 
 [node name="Pushtile_Down" type="AnimatedSprite"]
 frames = SubResource( 17 )
-frame = 15
+frame = 3
 playing = true
 centered = false
 script = ExtResource( 2 )
@@ -86,3 +86,4 @@ direction = 1
 
 [node name="Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+bus = "Audio"

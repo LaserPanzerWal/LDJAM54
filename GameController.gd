@@ -8,13 +8,16 @@ var nextLevel = 0 setget ,get_next_level
 func set_music_vol(value):
 	value = clamp(value, 0, 1.0)
 	musicVol = value
+	print(musicVol)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear2db(musicVol))
 
 func get_music_vol():
 	return musicVol
 
 func set_sound_vol(value):
-	value = clamp(value, 0, 1.0)
+	value = clamp(value, 0,1.0)
 	soundVol = value
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Audio"), linear2db(soundVol))
 
 func get_sound_vol():
 	return soundVol
@@ -29,3 +32,6 @@ func level_finished(level):
 	nextLevel += 1
 	if nextLevel > unlockedLevel:
 		unlockedLevel = nextLevel
+
+func game_finished():
+	nextLevel = 0
