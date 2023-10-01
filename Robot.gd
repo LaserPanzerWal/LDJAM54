@@ -9,6 +9,10 @@ var currentMove = null
 var map setget , get_map
 
 
+var impactsound:AudioStream = preload("res://sounds/wallimpact.wav")
+onready var audio = $AudioStreamPlayer
+
+
 func _ready():
 	map = get_parent()
 
@@ -50,6 +54,8 @@ func _process(delta):
 				var finished = currentMove.perform(self,delta)
 				if(finished):
 					currentMove = null
+					audio.stream = impactsound
+					audio.play()
 	else:
 		if(!currentMove && moves.size() > 0):
 			currentMove = moves.pop_front()
@@ -57,6 +63,8 @@ func _process(delta):
 			var finished = currentMove.perform(self,delta)
 			if(finished):
 				currentMove = null
+				audio.stream = impactsound
+				audio.play()
 		else:
 			emit_signal("path_finished")
 

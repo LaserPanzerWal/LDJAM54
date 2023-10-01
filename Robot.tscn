@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Sprites/Robot.png" type="Texture" id=1]
 [ext_resource path="res://Robot.gd" type="Script" id=2]
+[ext_resource path="res://sounds/wallimpact.wav" type="AudioStream" id=3]
 
 [node name="Robot" type="Sprite"]
 z_index = 100
 texture = ExtResource( 1 )
 centered = false
 script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Audio"

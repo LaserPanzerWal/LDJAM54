@@ -1,5 +1,6 @@
 class_name move_base
 var startpos:Vector2
+var undoterminals = []
 
 func perform(obj,delta):
 	if(!startpos):
@@ -8,3 +9,6 @@ func perform(obj,delta):
 func undo(obj):
 	obj.position = startpos
 	obj.position = obj.get_map().get_grid_pos(obj.position) * obj.get_map().tilesize
+	for term in undoterminals:
+		term.set_running(false)
+		obj.get_map().undoterminal()

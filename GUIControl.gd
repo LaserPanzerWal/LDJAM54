@@ -16,3 +16,6 @@ func update_targets(value):
 
 func end_level():
 	winscreen.show()
+
+func switch_mode():
+	mode.text = "Execution"

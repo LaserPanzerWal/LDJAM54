@@ -1,7 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Sprites/Terminal.png" type="Texture" id=1]
+[ext_resource path="res://Terminal.gd" type="Script" id=2]
+[ext_resource path="res://sounds/terminalstart.wav" type="AudioStream" id=3]
 
 [node name="Terminal" type="Sprite"]
 texture = ExtResource( 1 )
 centered = false
+script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Audio"

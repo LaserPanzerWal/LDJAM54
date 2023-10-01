@@ -9,5 +9,5 @@ func perform(obj,delta):
 		return false
 	else:
 		obj.position = obj.get_map().get_grid_pos(obj.position + Vector2(15,0)) * obj.get_map().tilesize
-		obj.get_map().check_terminal(obj.position)
+		undoterminals = obj.get_map().check_terminal(obj.position)
 		return true

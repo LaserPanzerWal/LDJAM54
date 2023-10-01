@@ -37,7 +37,7 @@ func init_map(lvl):
 	if(levelget == null):
 		print("no more levels")
 		return
-	var levelstring = levelget.split(";",false)	
+	var levelstring = levelget.split(";",false)
 	var startpos = levelstring[0].split(",",false)
 	init_robot(int(startpos[0]),int(startpos[1]))
 	for i in range(0,levelstring.size()-1):
@@ -94,34 +94,45 @@ func init_robot(x,y):
 func is_floor(pos):
 	var gridpos = get_grid_pos(pos)
 	if(pos.x < 0 || gridpos.x >= (map.size())):
-		check_terminal(gridpos)
 		return false
 	if(pos.y < 0 || gridpos.y >= (map[0].size())):
-		check_terminal(gridpos)
 		return false
 	#check if tile is floor	
 	if(map[gridpos.x][gridpos.y] == 0):
 		return true
 	else:
-		check_terminal(gridpos)
 		return false
 
 func check_terminal(pos):
+	var result = []
 	if(!round_active):
 		return
 	var gridpos = get_grid_pos(pos)
 	if(gridpos.x < map.size() -3 && map[gridpos.x+1][gridpos.y] == 2):
-		targets -= 1
+		if !tiles[gridpos.x+1][gridpos.y].get_running():
+			tiles[gridpos.x+1][gridpos.y].set_running(true)
+			targets -= 1
+			result.append(tiles[gridpos.x+1][gridpos.y])
 	if(gridpos.x > 0 && map[gridpos.x-1][gridpos.y] == 2):
-		targets -= 1
+		if !tiles[gridpos.x-1][gridpos.y].get_running():
+			tiles[gridpos.x-1][gridpos.y].set_running(true)
+			targets -= 1
+			result.append(tiles[gridpos.x-1][gridpos.y])
 	if(gridpos.y < map[0].size() -3 && map[gridpos.x][gridpos.y+1] == 2):
-		targets -= 1
+		if !tiles[gridpos.x][gridpos.y+1].get_running():
+			tiles[gridpos.x][gridpos.y+1].set_running(true)
+			targets -= 1
+			result.append(tiles[gridpos.x][gridpos.y+1])
 	if(gridpos.y > 0 && map[gridpos.x][gridpos.y-1] == 2):
-		targets -= 1
+		if !tiles[gridpos.x][gridpos.y-1].get_running():
+			tiles[gridpos.x][gridpos.y-1].set_running(true)
+			targets -= 1
+			result.append(tiles[gridpos.x][gridpos.y-1])
 	if(targets == 0):
 		round_active = false
 		print("You won!")
 		play_program()
+	return result
 
 func get_grid_pos(pos):
 	var x = int(pos.x) / 16
@@ -138,6 +149,7 @@ func update_targets():
 	emit_signal("update_targets", targets)
 
 func play_program():
+	get_parent().switch_mode()
 	robot.position = robotstart
 	robot.play_program()
 
@@ -146,3 +158,5 @@ func end_level():
 		GameController.level_finished(level)
 		ended = true
 	
+func undoterminal():
+	targets += 1
