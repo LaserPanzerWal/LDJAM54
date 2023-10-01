@@ -64,11 +64,11 @@ margin_right = 256.0
 margin_bottom = 240.0
 
 [node name="Label" type="Label" parent="Control/BottomBar"]
-margin_left = 52.0
+margin_left = 46.0
 margin_top = 3.0
-margin_right = 196.0
+margin_right = 214.0
 margin_bottom = 13.0
-text = "Undo move with B KEY"
+text = "Undo move with A BUTTON"
 
 [node name="map" type="Node2D" parent="."]
 position = Vector2( 0, 16 )
