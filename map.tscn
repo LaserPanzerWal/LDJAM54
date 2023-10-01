@@ -41,7 +41,7 @@ margin_left = 83.0
 margin_top = 3.0
 margin_right = 163.0
 margin_bottom = 13.0
-text = "SIMULATION"
+text = "PROGRAMMING"
 align = 1
 
 [node name="TargetsLeft_Title" type="Label" parent="Control/TopBar"]
