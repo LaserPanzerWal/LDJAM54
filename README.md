@@ -6,14 +6,14 @@ This is my entry for Ludum Dare 54, themed "Limited Space"
 
 These sources are made viewable for public for Ludum Dare 54. You may use them for the following purposes:
 
--Confirmation of compliance with Ludum Dare 54 Compo rules
--Reference for your own projects
+- Confirmation of compliance with Ludum Dare 54 Compo rules
+- Reference for your own projects
 
 You may not:
 
--Use this code or portions of it commercially without permission of the author
--Use this code in its entirety or in significant portions for unrelated projects without permission of the author
--Release or redistribute this code on any medium or platform except for this repository
+- Use this code or portions of it commercially without permission of the author
+- Use this code in its entirety or in significant portions for unrelated projects without permission of the author
+- Release or redistribute this code on any medium or platform except for this repository
 
 
 What does this mean?
