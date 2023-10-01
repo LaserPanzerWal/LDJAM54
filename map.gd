@@ -161,32 +161,34 @@ func get_push_dir(pos):
 
 func check_terminal(pos):
 	var result = []
-	if(!round_active):
-		return
 	var gridpos = get_grid_pos(pos)
 	if(gridpos.x < map.size() -1 && map[gridpos.x+1][gridpos.y] == 2):
 		if !tiles[gridpos.x+1][gridpos.y].get_running():
 			tiles[gridpos.x+1][gridpos.y].set_running(true)
-			targets -= 1
-			result.append(tiles[gridpos.x+1][gridpos.y])
+			if(round_active):
+				targets -= 1
+				result.append(tiles[gridpos.x+1][gridpos.y])
 	if(gridpos.x > 0 && map[gridpos.x-1][gridpos.y] == 2):
 		if !tiles[gridpos.x-1][gridpos.y].get_running():
 			tiles[gridpos.x-1][gridpos.y].set_running(true)
-			targets -= 1
-			result.append(tiles[gridpos.x-1][gridpos.y])
+			if(round_active):
+				targets -= 1
+				result.append(tiles[gridpos.x-1][gridpos.y])
 	if(gridpos.y < map[0].size() -1 && map[gridpos.x][gridpos.y+1] == 2):
 		if !tiles[gridpos.x][gridpos.y+1].get_running():
 			tiles[gridpos.x][gridpos.y+1].set_running(true)
-			targets -= 1
-			result.append(tiles[gridpos.x][gridpos.y+1])
+			if(round_active):
+				targets -= 1
+				result.append(tiles[gridpos.x][gridpos.y+1])
 	if(gridpos.y > 0 && map[gridpos.x][gridpos.y-1] == 2):
 		if !tiles[gridpos.x][gridpos.y-1].get_running():
 			tiles[gridpos.x][gridpos.y-1].set_running(true)
-			targets -= 1
-			result.append(tiles[gridpos.x][gridpos.y-1])
-	if(targets == 0):
+			if(round_active):
+				targets -= 1
+				result.append(tiles[gridpos.x][gridpos.y-1])
+	if(round_active && targets == 0):
 		round_active = false
-		play_program()
+		start_program()
 	return result
 
 func get_grid_pos(pos):
@@ -203,7 +205,20 @@ func get_memory_limit():
 func update_targets():
 	emit_signal("update_targets", targets)
 
+func start_program():
+	get_parent().show_compile()
+	var timer = Timer.new()
+	add_child(timer)
+	timer.connect("timeout", self, "play_program")
+	timer.one_shot = true
+	timer.wait_time = 1.5
+	timer.start()
+
 func play_program():
+	for i in range(0,map.size()):
+		for j in range(0, map[0].size()):
+			if(map[i][j]) == 2:
+				tiles[i][j].set_running(false)
 	get_parent().switch_mode()
 	robot.position = robotstart
 	robot.play_program()

@@ -18,4 +18,9 @@ func end_level():
 	winscreen.show()
 
 func switch_mode():
+	$CompileScreen.hide()
 	mode.text = "Execution"
+
+func show_compile():
+	mode.text = "Compilation"
+	$CompileScreen.show()

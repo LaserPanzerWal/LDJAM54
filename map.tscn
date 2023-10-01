@@ -63,6 +63,13 @@ margin_top = 224.0
 margin_right = 256.0
 margin_bottom = 240.0
 
+[node name="Label" type="Label" parent="Control/BottomBar"]
+margin_left = 52.0
+margin_top = 3.0
+margin_right = 196.0
+margin_bottom = 13.0
+text = "Undo move with B KEY"
+
 [node name="map" type="Node2D" parent="."]
 position = Vector2( 0, 16 )
 script = ExtResource( 1 )
@@ -94,6 +101,26 @@ margin_right = 164.0
 margin_bottom = 52.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "~OK"
+align = 1
+
+[node name="CompileScreen" type="Node2D" parent="."]
+visible = false
+z_index = 110
+
+[node name="Panel" type="Panel" parent="CompileScreen"]
+margin_left = 36.0
+margin_top = 79.0
+margin_right = 224.0
+margin_bottom = 146.0
+theme = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="CompileScreen/Panel"]
+margin_left = 24.0
+margin_top = 28.0
+margin_right = 164.0
+margin_bottom = 38.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Compiling..."
 align = 1
 
 [node name="Music" type="AudioStreamPlayer" parent="."]

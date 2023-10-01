@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://UITheme.tres" type="Theme" id=1]
 [ext_resource path="res://GameOver.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Sprites/Robot_front.png" type="Texture" id=5]
 [ext_resource path="res://Sprites/Robot_back.png" type="Texture" id=6]
 [ext_resource path="res://Sprites/Robot_left.png" type="Texture" id=7]
+[ext_resource path="res://sounds/MenuSong.mp3" type="AudioStream" id=8]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 7 )
@@ -70,7 +71,11 @@ text = "~Back to menu"
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 204, 39 )
 frames = SubResource( 5 )
-frame = 2
 playing = true
 
 [node name="Tint_Layer" parent="." instance=ExtResource( 3 )]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+autoplay = true
+bus = "Music"
