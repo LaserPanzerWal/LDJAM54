@@ -7,17 +7,34 @@
 script = ExtResource( 1 )
 
 [node name="tile" type="Label" parent="."]
-margin_left = 3.0
+margin_left = 1.0
 margin_top = 223.0
-margin_right = 14.0
+margin_right = 12.0
 margin_bottom = 239.0
 theme = ExtResource( 2 )
 text = "0"
 
+[node name="mem" type="Label" parent="."]
+margin_left = 1.0
+margin_top = 209.0
+margin_right = 12.0
+margin_bottom = 225.0
+theme = ExtResource( 2 )
+text = "8"
+
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 15.0
 margin_top = 208.0
-margin_right = 256.0
+margin_right = 242.0
 margin_bottom = 240.0
 theme = ExtResource( 2 )
 wrap_enabled = true
+
+[node name="Button" type="Button" parent="."]
+margin_left = 242.0
+margin_top = 208.0
+margin_right = 258.0
+margin_bottom = 239.0
+text = "!"
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

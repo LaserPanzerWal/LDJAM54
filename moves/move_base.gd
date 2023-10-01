@@ -7,8 +7,7 @@ func perform(obj,delta):
 		startpos = obj.position
 
 func undo(obj):
-	obj.position = startpos
-	obj.position = obj.get_map().get_grid_pos(obj.position) * obj.get_map().tilesize
+	obj.position = (obj.get_map().get_grid_pos(startpos) * obj.get_map().tilesize) + Vector2(obj.get_map().tilesize / 2, obj.get_map().tilesize /2)
 	for term in undoterminals:
 		term.set_running(false)
 		obj.get_map().undoterminal()

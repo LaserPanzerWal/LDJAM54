@@ -17,6 +17,10 @@ var robotscene = preload("res://Robot.tscn")
 var floorscene = preload("res://Floor.tscn")
 var wallscene = preload("res://Wall.tscn")
 var terminalscene = preload("res://Terminal.tscn")
+var pushtileupscene = preload("res://Pushtile_Up.tscn")
+var pushtiledownscene = preload("res://Pushtile_Down.tscn")
+var pushtileleftscene = preload("res://Pushtile_Left.tscn")
+var pushtilerightscene = preload("res://Pushtile_Right.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,8 +44,9 @@ func init_map(lvl):
 	var levelstring = levelget.split(";",false)
 	var startpos = levelstring[0].split(",",false)
 	init_robot(int(startpos[0]),int(startpos[1]))
-	for i in range(0,levelstring.size()-1):
-		var line = levelstring[i+1].split(",",false)
+	memorylimit = int(levelstring[1])
+	for i in range(0,levelstring.size()-2):
+		var line = levelstring[i+2].split(",",false)
 		map.append([])
 		tiles.append([])
 		for j in range(0,line.size()):
@@ -68,6 +73,10 @@ func init_tile(x,y):
 	#0 = floor
 	#1 = wall
 	#2 = terminal
+	#3 = pushtile right
+	#4 = pushtile down
+	#5 = pushtile left
+	#6 = pushtile up
 	var object
 	if(map[x][y] == 0):
 		object = floorscene.instance()
@@ -79,29 +88,55 @@ func init_tile(x,y):
 		object = terminalscene.instance()
 		tiles[x][y] = object
 		targets += 1
+	if(map[x][y] == 3):
+		object = pushtilerightscene.instance()
+		tiles[x][y] = object
+	if(map[x][y] == 4):
+		object = pushtiledownscene.instance()
+		tiles[x][y] = object
+	if(map[x][y] == 5):
+		object = pushtileleftscene.instance()
+		tiles[x][y] = object
+	if(map[x][y] == 6):
+		object = pushtileupscene.instance()
+		tiles[x][y] = object
 	add_child(object)
 	object.position = Vector2(x*tilesize, y*tilesize)
 
 func init_robot(x,y):
 	robot = robotscene.instance()
 	add_child(robot)
-	robot.position = Vector2(x*tilesize,y*tilesize)
+	robot.position = Vector2(x*tilesize + tilesize/2,y*tilesize + tilesize/2)
 	robotstart = robot.position
 	robot.connect("update_memory", get_parent(), "update_memory")
 	robot.connect("path_finished", get_parent(), "end_level")
 	robot.connect("path_finished", self, "end_level")
 
-func is_floor(pos):
+func can_move_on(pos):
 	var gridpos = get_grid_pos(pos)
+	#check if level border is hit
 	if(pos.x < 0 || gridpos.x >= (map.size())):
 		return false
 	if(pos.y < 0 || gridpos.y >= (map[0].size())):
 		return false
-	#check if tile is floor	
-	if(map[gridpos.x][gridpos.y] == 0):
+	#check if tile is floor
+	var floortiles = [0,3,4,5,6]
+	if(floortiles.has(map[gridpos.x][gridpos.y])):
 		return true
 	else:
 		return false
+
+func is_on_pushtile(pos):
+	var gridpos = get_grid_pos(pos)
+	var movetiles = [3,4,5,6]
+	if movetiles.has(map[gridpos.x][gridpos.y]):
+		return true
+	else:
+		return false
+
+func get_push_dir(pos):
+	var gridpos = get_grid_pos(pos)
+	return tiles[gridpos.x][gridpos.y].get_push()
 
 func check_terminal(pos):
 	var result = []

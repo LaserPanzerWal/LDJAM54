@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TintShader.tres" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 1 )
+shader_param/tint = Vector3( 0.5, 0.7, 0.3 )
+
+[node name="Tint_Layer" type="Node2D"]
+z_index = 500
+
+[node name="TintRect" type="ColorRect" parent="."]
+material = SubResource( 2 )
+margin_right = 256.0
+margin_bottom = 240.0
