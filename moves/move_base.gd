@@ -20,7 +20,8 @@ func add_box(obj, box):
 		if(obj.moves.back() == self):
 			undoboxes.append(box)
 		else:
-			obj.moves.back().add_box(obj, box)
+			if(obj.moves.back()):
+				obj.moves.back().add_box(obj, box)
 
 func get_boxes():
 	return undoboxes
