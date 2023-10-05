@@ -75,7 +75,11 @@ func _process(delta):
 				audio.play()
 		else:
 			emit_signal("path_finished")
-
+			
+func reset_movechanges():
+	for move in moves:
+		move.undo(self)
+		
 func play_program():
 	currentMove = null
 	interactive = false

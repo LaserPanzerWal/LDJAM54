@@ -48,7 +48,6 @@ func item_select():
 			toggle_settings()
 
 func toggle_settings():
-	print("duh")
 	if(isactive):
 		isactive = false
 		$Config.show()

@@ -220,6 +220,7 @@ func play_program():
 			if(map[i][j]) == 2:
 				tiles[i][j].set_running(false)
 	get_parent().switch_mode()
+	robot.reset_movechanges()
 	robot.position = robotstart
 	robot.play_program()
 

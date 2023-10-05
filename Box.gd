@@ -11,7 +11,6 @@ func get_speed():
 	return speed
 
 func undo():
-	print("eh")
 	position = positions.pop_back()
 
 func push(dir):

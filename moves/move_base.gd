@@ -1,7 +1,7 @@
 class_name move_base
 var startpos:Vector2
 var undoterminals = []
-var undobox = null
+var undoboxes = []
 
 func perform(obj,delta):
 	if(!startpos):
@@ -12,5 +12,15 @@ func undo(obj):
 	for term in undoterminals:
 		term.set_running(false)
 		obj.get_map().undoterminal()
-	if(undobox):
-		undobox.undo()
+	for box in undoboxes:
+		box.undo()
+
+func add_box(obj, box):
+	if(box):
+		if(obj.moves.back() == self):
+			undoboxes.append(box)
+		else:
+			obj.moves.back().add_box(obj, box)
+
+func get_boxes():
+	return undoboxes
